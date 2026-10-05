@@ -54,7 +54,7 @@ class Catalogo:
                 "id": id_pk,
                 "nombre": res.getString("name"),
                 "imagen": f"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/{id_pk}.png",
-                "tipos": " / ".join(tipos_lista)
+                "tipos": " / ".join(str(t) for t in tipos_lista)
             })
         return lista
 

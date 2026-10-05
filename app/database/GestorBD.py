@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import pokebase as pb
 from config import Config
