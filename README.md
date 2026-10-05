@@ -1,3 +1,5 @@
+[🇬🇧 English](README.md) | [🇪🇸 Español](README.es.md)
+
 # Pokédex Ecosystem & Resilient Data Sync Platform
 
 <p align="center">
@@ -11,110 +13,109 @@
 
 ---
 
-## 📌 Resumen Ejecutivo
+## 📌 Executive Summary
 
-**Pokédex Ecosystem** es una plataforma web modular y resiliente desarrollada con **Python y Flask**, diseñada bajo estrictos principios de **Arquitectura Limpia**, **Separación de Responsabilidades** y **Sincronización Automatizada de Datos**.
+**Pokédex Ecosystem** is a modular, resilient full-stack web platform built with **Python and Flask**, designed around **Clean Architecture**, **Separation of Concerns**, and **Automated Data Synchronization**.
 
-A diferencia de catálogos estáticos convencionales, la plataforma implementa una **arquitectura auto-reparable (*Auto-Healing Architecture*)** que monitoriza la integridad de la persistencia local contra la API externa de **PokeAPI**, hidratando automáticamente el esquema relacional en caso de detectar inconsistencias o registros faltantes. Además, integra un constructor de equipos interactivo, visualización de cadenas evolutivas dinámicas, matriz de efectividad de tipos, asistente conversacional y una suite completa de pruebas automatizadas.
-
----
-
-## 🛠️ Aspectos Destacados de Ingeniería
-
-### 1. 🔄 Arquitectura de Persistencia Auto-Reparable (Self-Healing)
-* **Verificación de Integridad en Arranque:** Durante el ciclo de inicialización del `create_app()`, el motor del `GestorBD` evalúa métricas clave de integridad del catálogo (1.025 especies de Pokémon y 484 relaciones evolutivas).
-* **Worker de Hidratación en Caliente:** Si la base de datos local SQLite se encuentra vacía o incompleta, se activa automáticamente un proceso de sincronización con la API pública para descargar, estructurar y persistir el grafo de entidades sin requerir intervención manual ni migraciones externas.
-
-### 2. 🧩 Desacoplamiento Modular mediante Blueprints & Factory Pattern
-La aplicación prescinde por completo de controladores monolíticos, organizando sus dominios en módulos independientes registrados sobre el patrón **Application Factory**:
-* **`IU_LPokemon`:** Motor de búsqueda y filtrado dinámico (nombre, generación, tipo, estadísticas base) optimizado con JavaScript asíncrono.
-* **`IU_Equipos`:** Constructor de equipos Pokémon con persistencia relacional por usuario y cálculo agregado de estadísticas de combate.
-* **`IU_CadenaEvolutiva`:** Algoritmo de resolución de árboles y ramificaciones evolutivas complejas.
-* **`IU_CompatibilidadTipos`:** Matriz dinámica de resistencias, debilidades y multiplicadores de daño según el tipo elemental.
-* **`IU_Chatbot`:** Asistente interactivo integrado para consultas rápidas sobre el universo Pokémon.
-* **`IU_Admin` & `IU_Amigos`:** Sistema de roles, auditoría de peticiones, moderación y funcionalidades sociales (solicitudes de amistad, inspección de equipos ajenos).
-
-### 3. 🧪 Testing Automatizado & Fiabilidad
-El repositorio incluye una suite de pruebas unitarias y de integración organizadas en el directorio `tests/`:
-* `test_gestion_usuarios.py`: Flujos de autenticación, control de sesiones, roles y validación de contraseñas.
-* `test_gestion_equipos.py`: Creación, actualización, límites de integrantes y persistencia de equipos.
-* `test_chatbot.py`: Validación de respuestas e intenciones del asistente conversacional.
-* `test_lpokemon.py`: Filtrado de catálogo y validación de atributos.
-* `test_changelog.py`: Trazabilidad y registro de actividad de los usuarios.
+Unlike traditional static web catalogs, the platform implements an **Auto-Healing Architecture** that continuously monitors local persistence integrity against the external public **PokeAPI**. It automatically hydrates relational schemas upon detecting missing entities or inconsistent database states. Additionally, it features an interactive battle team builder, recursive evolution tree exploration, dynamic elemental type compatibility analytics, a conversational chatbot assistant, and an automated test suite.
 
 ---
 
-## 🏗️ Arquitectura del Proyecto
+## 🛠️ Key Engineering Highlights
+
+### 1. 🔄 Self-Healing Persistence Architecture
+* **Startup Integrity Verification:** During the `create_app()` bootstrap lifecycle, the `GestorBD` engine audits key database integrity indicators (1,025 Pokémon species and 484 evolution graph relations).
+* **Hot-Hydration Worker:** If the local SQLite database is missing or incomplete, a background synchronization worker consumes the external PokeAPI to structure, index, and persist the entity graph without requiring manual seed scripts or external migrations.
+
+### 2. 🧩 Modular Decoupling via Blueprints & Application Factory
+The application eliminates monolithic controllers by organizing functional domains into isolated **Flask Blueprints** registered onto the Application Factory pattern:
+* **`IU_LPokemon`:** High-performance catalog search and dynamic filtering engine (name, generation, type, base stats) powered by asynchronous JavaScript.
+* **`IU_Equipos`:** Custom Pokémon team builder with relational user persistence and aggregated combat stat analytics.
+* **`IU_CadenaEvolutiva`:** Recursive graph traversal algorithm for complex branching evolution trees.
+* **`IU_CompatibilidadTipos`:** Dynamic damage multiplier matrix calculating dual-type elemental resistances and weaknesses.
+* **`IU_Chatbot`:** Integrated conversational assistant handling domain-specific inquiries.
+* **`IU_Admin` & `IU_Amigos`:** Role-based access control (RBAC), request auditing, user moderation, and social networking features (friend requests, team sharing).
+
+### 3. 🧪 Automated Testing & Reliability
+The codebase includes an automated unit and integration testing suite in `tests/`:
+* `test_gestion_usuarios.py`: Authentication lifecycle, session security, role authorization, and password validation.
+* `test_gestion_equipos.py`: Team creation, relational updates, capacity validation, and team persistence.
+* `test_chatbot.py`: Natural language query matching and intent resolution.
+* `test_lpokemon.py`: Catalog query filters and attribute validation.
+* `test_changelog.py`: Audit trails and user activity tracking.
+
+---
+
+## 🏗️ Project Architecture
 
 ```text
 pokedex-flask-manager/
 ├── app/
 │   ├── controller/
-│   │   ├── model/             # Modelos de dominio (Catalogo, GestorEquipos, PokeEspecie...)
-│   │   └── ui/                # Controladores Blueprints (Admin, Chatbot, Equipos, Pokemon...)
+│   │   ├── model/             # Domain models (Catalogo, GestorEquipos, PokeEspecie...)
+│   │   └── ui/                # Blueprint UI controllers (Admin, Chatbot, Teams, Catalog...)
 │   ├── database/
-│   │   ├── GestorBD.py        # Capa de abstracción de datos y worker de sincronización
-│   │   ├── ResultadoSQL.py    # Envoltorio tipado de cursores SQL
-│   │   └── schema.sql         # Esquema DDL relacional (Tablas, llaves foráneas, índices)
-│   ├── static/                # Assets frontend (CSS3 custom properties, JavaScript modular)
-│   └── templates/             # Vistas Jinja2 desacopladas por vistas de Blueprint
-├── tests/                     # Suite de pruebas automatizadas
-├── config.py                  # Parámetros de entorno y configuración de runtime
-├── crear_admins.py            # Utilidad CLI para provisionar superusuarios
-├── requirements.txt           # Manifiesto estricto de dependencias de producción
-└── run.py                     # Punto de entrada de la aplicación
+│   │   ├── GestorBD.py        # Data Access Layer & automated synchronization worker
+│   │   ├── ResultadoSQL.py    # Strongly-typed SQL cursor wrapper
+│   │   └── schema.sql         # Relational DDL schema (Tables, foreign keys, indexes)
+│   ├── static/                # Frontend assets (CSS3 custom properties, modular JS)
+│   └── templates/             # Decoupled Jinja2 views organized by Blueprint domain
+├── tests/                     # Automated unit and integration test suite
+├── config.py                  # Environment runtime configuration
+├── crear_admins.py            # CLI administrative provisioning tool
+├── requirements.txt           # Strict production dependencies manifest
+└── run.py                     # Application entry point
 ```
 
 ---
 
-## ⚙️ Instalación y Puesta en Marcha
+## ⚙️ Installation & Setup
 
-### 1. Clonar el repositorio y preparar el entorno virtual:
+### 1. Clone the repository and set up a virtual environment:
 ```bash
 git clone https://github.com/aimarlarriba/pokedex-flask-manager.git
 cd pokedex-flask-manager
 
-# Crear entorno virtual
+# Create virtual environment
 python -m venv venv
 
-# Activar en Windows:
+# Activate on Windows:
 venv\Scripts\activate
 
-# Activar en Linux/macOS:
+# Activate on Linux/macOS:
 source venv/bin/activate
 
-# Instalar dependencias
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### 2. Ejecutar la Aplicación:
+### 2. Run the Application:
 ```bash
 python run.py
 ```
 > [!NOTE]
-> Al arrancar por primera vez, la aplicación creará automáticamente `identifier.sqlite` a partir de `schema.sql` y sincronizará los registros de PokeAPI de forma transparente. La interfaz estará disponible en:
+> On the first launch, the application automatically provisions `identifier.sqlite` using `schema.sql` and hydrates catalog data from PokeAPI transparently. Access the web interface at:
 > `http://localhost:1111`
 
-### 3. Ejecutar la Suite de Pruebas:
-Para validar la integridad de todos los módulos y controladores:
+### 3. Run the Automated Test Suite:
 ```bash
 pytest
-# o alternativamente con unittest:
+# or alternatively via standard unittest:
 python -m unittest discover tests
 ```
 
 ---
 
-## 👥 Contexto Académico y Autoría
+## 👥 Academic Context & Authorship
 
-Este proyecto fue concebido y desarrollado originalmente como una práctica colaborativa para la asignatura de **Análisis y Diseño de Sistemas de Información (ADSI)** en la **Universidad del País Vasco (UPV/EHU)**. 
+Originally conceptualized as a collaborative university project for the **Information Systems Analysis & Design (ADSI)** course at the **University of the Basque Country (UPV/EHU)**.
 
-Equipo de desarrollo original: *Eneko Rodríguez, Urko Horas, Aimar Larriba, Iván Salazar y Aitor Cotano*.
+Original student contributors: *Eneko Rodríguez, Urko Horas, Aimar Larriba, Iván Salazar, and Aitor Cotano*.
 
-El presente repositorio constituye la **evolución y refactorización técnica individual** mantenida por **[Aimar Larriba](https://github.com/aimarlarriba)**, orientada a cumplir con estándares de arquitectura limpia, desacoplamiento modular y preparación para entornos profesionales.
+This repository represents the **individual architectural refactoring, expansion, and ongoing maintenance** by **[Aimar Larriba](https://github.com/aimarlarriba)**, engineered to satisfy modern clean architecture, modular decoupling, and industry production standards.
 
 ---
 
-## ⚖️ Licencia
+## ⚖️ License
 
-Distribuido bajo la Licencia **MIT**. Consulta el archivo [LICENSE](LICENSE) para más información.
+Distributed under the **MIT** License. See [LICENSE](LICENSE) for more details.
