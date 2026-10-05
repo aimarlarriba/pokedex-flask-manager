@@ -1,7 +1,28 @@
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-.idea/
-.vscode/
+*.py[cod]
+*$py.class
+
+# Virtual environments
 .venv/
+venv/
+ENV/
+env/
+
+# Databases & local storage
 *.db
 *.sqlite
+*.sqlite3
+identifier.sqlite
+Library.sqlite
+
+# IDE configuration
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+Desktop.ini
