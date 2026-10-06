@@ -1,9 +1,9 @@
-[🇬🇧 English](README.md) | [🇪🇸 Español](README.es.md)
+🌐 **Language / Idioma:** [English](README.md) • [Español](README.es.md)
 
 # Pokédex Ecosystem & Resilient Data Sync Platform
 
 <p align="center">
-  [![CI Test Suite](https://github.com/aimarlarriba/pokedex-flask-manager/actions/workflows/ci.yml/badge.svg)](https://github.com/aimarlarriba/pokedex-flask-manager/actions/workflows/ci.yml)
+  <a href="https://github.com/aimarlarriba/pokedex-flask-manager/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/aimarlarriba/pokedex-flask-manager/ci.yml?branch=main&style=for-the-badge&logo=github&label=CI%20TESTS" alt="CI Test Suite"/></a>
   <img src="https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python Version"/>
   <img src="https://img.shields.io/badge/Framework-Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask Framework"/>
   <img src="https://img.shields.io/badge/Architecture-Factory%20%26%20Blueprints-007ACC?style=for-the-badge" alt="Architecture Pattern"/>
